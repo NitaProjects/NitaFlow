@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -8,15 +10,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Redirigir según el rol después del login
+// Página de bienvenida para invitados
+Route::get('/guest', function () {
+    return view('guest.welcome');
+})->name('guest.view');
+
+// Redirigir al dashboard según el rol después del login
 Route::get('/dashboard', function () {
-    if (Auth::check()) {
-        if (Auth::user()->hasRole('admin')) {
-            return redirect()->route('admin.dashboard');
-        } elseif (Auth::user()->hasRole('user')) {
-            return redirect()->route('user.dashboard');
-        }
-    }
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -27,18 +27,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Dashboard para administradores
+// Rutas para administradores
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users.index');
+    Route::get('/admin/users/create', [AdminController::class, 'create'])->name('admin.users.create');
+    Route::post('/admin/users', [AdminController::class, 'store'])->name('admin.users.store');
+    Route::get('/admin/users/{user}/edit', [AdminController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/admin/users/{user}', [AdminController::class, 'update'])->name('admin.users.update');
+    Route::delete('/admin/users/{user}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
 });
 
-// Dashboard para usuarios normales
-Route::middleware(['auth', 'role:user'])->group(function () {
-    Route::get('/user/dashboard', function () {
-        return view('user.dashboard');
-    })->name('user.dashboard');
+// Rutas para gestión de usuarios (solo admin)
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('users', UserController::class)->except(['create', 'edit']);
 });
 
 require __DIR__.'/auth.php';

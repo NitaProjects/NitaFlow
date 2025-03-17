@@ -13,9 +13,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // Ejecutar PermissionSeeder antes de crear usuarios
+        $this->call([
+            PermissionSeeder::class,
+            TeamSeeder::class,
+            TaskSeeder::class,
+        ]);
         // Crear roles
-        $adminRole = Role::create(['name' => 'admin']);
-        $userRole = Role::create(['name' => 'user']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $userRole = Role::firstOrCreate(['name' => 'user']);
+        $guestRole = Role::firstOrCreate(['name' => 'guest']); // Se añade el rol guest
 
         // Crear un usuario admin de prueba
         $admin = User::create([
