@@ -15,9 +15,10 @@ class DatabaseSeeder extends Seeder
     {
         // Ejecutar PermissionSeeder antes de crear usuarios
         $this->call([
-            PermissionSeeder::class,
-            TeamSeeder::class,
-            TaskSeeder::class,
+            PermissionSeeder::class, // Asegurar permisos y roles primero
+            UserSeeder::class,       // Crear usuarios antes de asignar tareas
+            TeamSeeder::class,       // Crear equipos antes de asignar usuarios
+            TaskSeeder::class,       // Crear tareas después de que haya usuarios y equipos
         ]);
         // Crear roles
         $adminRole = Role::firstOrCreate(['name' => 'admin']);

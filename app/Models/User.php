@@ -36,4 +36,13 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Team::class);
     }
+
+    /**
+     * Relación muchos a muchos con equipos.
+     */
+    public function tasks(): BelongsToMany
+    {
+        return $this->belongsToMany(Task::class);
+    }
+    
 }

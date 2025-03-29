@@ -2,63 +2,91 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Vista para usuarios (sus propios equipos)
     public function index()
     {
-        //
+        $teams = auth()->user()->teams;
+        return view('user.teams.index', compact('teams'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Vista para admin (todos los equipos)
+    public function adminIndex()
+{
+    $teams = Team::all(); 
+    return view('admin.teams.index', compact('teams'));
+}
+
+
+    public function userIndex()
+    {
+        $teams = auth()->user()->teams; // Relación entre usuario y equipos
+        return view('user.teams.index', compact('teams'));
+    }
+
+    // Creación de equipos (solo admin)
     public function create()
     {
-        //
+        $users = User::all(); // Obtener todos los usuarios disponibles para asignar
+        return view('admin.teams.create', compact('users'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'user_id' => 'required|exists:users,id' // Asignar un usuario al equipo
+        ]);
+
+        $team = Team::create([
+            'name' => $request->name,
+        ]);
+
+        // Asignar el usuario al equipo
+        $team->users()->attach($request->user_id);
+
+        return redirect()->route('admin.teams.index')->with('success', 'Equipo creado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Editar equipo (solo admin)
+    public function edit(Team $team)
     {
-        //
+        $users = User::all();
+        return view('admin.teams.edit', compact('team', 'users'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Team $team)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'user_id' => 'nullable|exists:users,id' // Puede o no cambiar el usuario asignado
+        ]);
+
+        $team->update(['name' => $request->name]);
+
+        // Si hay un usuario seleccionado, actualizar la relación
+        if ($request->user_id) {
+            $team->users()->sync([$request->user_id]);
+        }
+
+        return redirect()->route('admin.teams.index')->with('success', 'Equipo actualizado correctamente.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // Eliminar equipo (solo admin)
+    public function destroy(Team $team)
     {
-        //
+        $team->delete();
+        return redirect()->route('admin.teams.index')->with('success', 'Equipo eliminado correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // Ver detalles de un equipo
+    public function show(Team $team)
     {
-        //
+        return view('admin.teams.show', compact('team'));
     }
 }

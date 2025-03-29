@@ -41,13 +41,13 @@
                 <div class="article-card bg-white shadow-md rounded-lg overflow-hidden p-4">
                     <h3 class="text-xl font-bold text-gray-900">Guía para gestionar proyectos con NitaFlow</h3>
                     <p class="mt-2 text-gray-600">Aprende cómo optimizar la gestión de tareas y equipos con nuestra plataforma.</p>
-                    <a href="#" class="mt-4 inline-block text-blue-500 hover:underline">Leer más</a>
+                    <a href="https://slack.com/intl/es-es/blog/productivity/productividad-personal-habitos-mejorarla" class="mt-4 inline-block text-blue-500 hover:underline">Leer más</a>
                 </div>
 
                 <div class="article-card bg-white shadow-md rounded-lg overflow-hidden p-4">
                     <h3 class="text-xl font-bold text-gray-900">Consejos para mejorar la productividad</h3>
                     <p class="mt-2 text-gray-600">Descubre cómo aumentar tu productividad con herramientas y estrategias eficientes.</p>
-                    <a href="#" class="mt-4 inline-block text-blue-500 hover:underline">Leer más</a>
+                    <a href="https://www.minijuegos.com/" class="mt-4 inline-block text-blue-500 hover:underline">Leer más</a>
                 </div>
 
                 <div class="article-card bg-white shadow-md rounded-lg overflow-hidden p-4">
@@ -59,7 +59,7 @@
                 <div class="article-card bg-white shadow-md rounded-lg overflow-hidden p-4">
                     <h3 class="text-xl font-bold text-gray-900">Automatización de tareas con NitaFlow</h3>
                     <p class="mt-2 text-gray-600">Descubre cómo NitaFlow puede ayudarte a automatizar procesos repetitivos.</p>
-                    <a href="#" class="mt-4 inline-block text-blue-500 hover:underline">Leer más</a>
+                    <a href="https://www.marca.com/" class="mt-4 inline-block text-blue-500 hover:underline">Leer más</a>
                 </div>
             </div>
         </div>

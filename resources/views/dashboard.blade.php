@@ -11,22 +11,29 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     {{ __("You're logged in!") }}
 
-                    {{-- Contenido específico para administradores --}}
-                    @can('manage users')
+                    {{-- Panel de Administrador --}}
+                    @role('admin')
                         <div class="mt-6 p-6 bg-gray-700 text-white rounded-lg">
                             <h3 class="text-lg font-bold">Panel de Administrador</h3>
                             <p>Bienvenido Admin, aquí puedes gestionar usuarios y configuraciones.</p>
                             <a href="{{ route('admin.users.index') }}" class="text-blue-400 underline">Gestionar Usuarios</a>
+                            <br>
+                            <a href="{{ route('admin.teams.index') }}" class="text-blue-400 underline">Gestionar Equipos</a>
+                            <br>
+                            <a href="{{ route('admin.tasks.index') }}" class="text-blue-400 underline">Gestionar Tareas</a>
                         </div>
-                    @endcan
+                    @endrole
 
-                    {{-- Contenido específico para usuarios normales --}}
-                    @if(Auth::user()->hasRole('user'))
+                    {{-- Panel de Usuario --}}
+                    @role('user')
                         <div class="mt-6 p-6 bg-gray-600 text-white rounded-lg">
                             <h3 class="text-lg font-bold">Panel de Usuario</h3>
                             <p>Bienvenido a tu panel, aquí puedes ver tus tareas y proyectos.</p>
+                            <a href="{{ route('user.tasks.index') }}" class="text-blue-400 underline">Mis Tareas</a>
+                            <br>
+                            <a href="{{ route('user.teams.index') }}" class="text-blue-400 underline">Mis Equipos</a>
                         </div>
-                    @endif
+                    @endrole
                 </div>
             </div>
         </div>
